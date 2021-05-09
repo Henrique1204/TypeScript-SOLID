@@ -1,7 +1,11 @@
-type CartItem = { name: string, price: number };
+type CartItem = {
+  name: string;
+  price: number;
+};
+
 type OrderStatus = 'OPEN' | 'CLOSED';
 
-export class ShoppingCart {
+export class ShoppingCartLegacy {
   private readonly _items: CartItem[] = [];
   private _oderStatus: OrderStatus = 'OPEN';
 
@@ -24,13 +28,18 @@ export class ShoppingCart {
   };
 
   public getTotal = (): number => {
-    const sum = this.items.reduce((acc, { price }) => acc + price, 0).toFixed(2);
+    const sum = this.items
+      .reduce((acc, { price }) => acc + price, 0)
+      .toFixed(2);
     return Number(sum);
   };
 
   public isEmpty = (): boolean => !this._items.length;
 
-  public sendMessage = (msg: string): void => console.log(`MENSAGEM ENVIADA: ${msg}`);
+  public sendMessage = (msg: string): void =>
+    console.log(`MENSAGEM ENVIADA: ${msg}`);
+
+  public saveOrder = (): void => console.log('Seu pedido foi salvo.');
 
   public clear = (): void => {
     console.log('O carrinho foi limpo...');
@@ -41,15 +50,18 @@ export class ShoppingCart {
     if (this.isEmpty()) return console.log('Seu carrinho está vazio!');
 
     this._oderStatus = 'CLOSED';
-    this.sendMessage(`Seu pedido com total de R$ ${this.getTotal()} foi recebido.`);
+    this.sendMessage(
+      `Seu pedido com total de R$ ${this.getTotal()} foi recebido.`
+    );
+    this.saveOrder();
     this.clear();
   };
 }
 
-const shoppingCart = new ShoppingCart();
+const shoppingCart = new ShoppingCartLegacy();
 
 shoppingCart.addItem({ name: 'Camisa', price: 19.91234 });
-shoppingCart.addItem({ name: 'Calça', price: 79.90 });
+shoppingCart.addItem({ name: 'Calça', price: 79.9 });
 shoppingCart.addItem({ name: 'Sapato', price: 50 });
 shoppingCart.addItem({ name: 'Boné', price: 100 });
 
